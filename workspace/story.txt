@@ -1,2 +1,2 @@
-This file exists to practice Git merges and conflict resolution.
+This file exists to practice Git merges and conflict resolution. bla
 Edit this file only when the lab instructions tell you to.
