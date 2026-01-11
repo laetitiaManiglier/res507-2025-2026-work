@@ -1,0 +1,25 @@
+{
+  "name": "res507-app",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --ext js,hbs server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/postgres": "^6.0.2",
+    "@fastify/view": "^11.1.1",
+    "fastify": "^5.6.2",
+    "handlebars": "^4.7.8",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
