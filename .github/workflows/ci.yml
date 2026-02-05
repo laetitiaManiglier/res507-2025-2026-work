@@ -30,9 +30,10 @@ jobs:
       - name: Run container
         run: |
           docker run -d --name quote-app -p 3000:3000 quote-app
+          # On attend 30 secondes pour que le container démarre sinon on affiche les logs et on arrête le workflow
           for i in $(seq 1 30); do
-            # Lane A: Stricter health check (verify content "OK")
-            if curl -fsS http://localhost:3000/health-bad | grep -q "OK"; then
+            # Vérifie si le container répond avec "OK"
+            if curl -fsS http://localhost:3000/health | grep -q "OK"; then
               echo "Health check passed"
               exit 0
             fi
@@ -41,9 +42,11 @@ jobs:
 
           echo "Health check failed"
           # Lane A: Print more debugging info
+          # Si Status: Up 2secondes le container redémarre en boucle, si Status: Up 30 secondes le container tourne mais il répond pas , Exited(1) le container est mort.
           echo "--- Docker PS ---"
           docker ps -a
           echo "--- Container Logs ---"
+          # Si le container est mort on affiche les logs et || true pour éviter que le workflow échoue pour voir les erreurs eviter d'arreter brutalement le workflow
           docker logs quote-app || true
           exit 1
 
