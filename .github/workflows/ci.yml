@@ -31,14 +31,19 @@ jobs:
         run: |
           docker run -d --name quote-app -p 3000:3000 quote-app
           for i in $(seq 1 30); do
-            if curl -fsS http://localhost:3000/health >/dev/null; then
+            # Lane A: Stricter health check (verify content "OK")
+            if curl -fsS http://localhost:3000/health | grep -q "OK"; then
               echo "Health check passed"
               exit 0
             fi
             sleep 1
           done
-
+          
           echo "Health check failed"
+          # Lane A: Print more debugging info
+          echo "--- Docker PS ---"
+          docker ps -a
+          echo "--- Container Logs ---"
           docker logs quote-app || true
           exit 1
 
