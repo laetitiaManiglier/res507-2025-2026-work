@@ -1,10 +1,11 @@
-name: CI Last
+name: CI
 
 on:
   push:
+  pull_request:
 
 jobs:
-  preview:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -22,10 +23,10 @@ jobs:
       - name: Run tests if present
         working-directory: app
         run: npm test --if-present
-      
+
       - name: Build Docker image
         run: docker build -t quote-app -f docker/Dockerfile .
-        
+
       - name: Run container
         run: |
           docker run -d --name quote-app -p 3000:3000 quote-app
@@ -44,4 +45,3 @@ jobs:
         if: always()
         run: |
           docker rm -f quote-app || true
-
