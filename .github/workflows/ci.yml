@@ -1,4 +1,4 @@
-name: CI Preview
+name: CI Last
 
 on:
   push:
