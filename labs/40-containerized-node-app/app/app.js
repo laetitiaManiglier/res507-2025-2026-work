@@ -21,6 +21,17 @@ export async function buildApp() {
   // Health check endpoint
   app.get("/health", async () => ({ ok: true }));
 
+  // Memory leak endpoint (Simulate OOMKilled) augmente de 10MB par seconde
+  app.get("/leak", async (req, reply) => {
+    const leak = [];
+    while (true) {
+      // Allocate 10MB chunks until crash
+      leak.push(Buffer.alloc(10 * 1024 * 1024).fill('x'));
+      console.log(`Allocated ${leak.length * 10} MB`);
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+  });
+
   // Get all quotes endpoint
   app.get("/", async (_req, reply) => {
     /******* TODO SELECT quotes from DB ******/
